@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) {
 
         // for full design, we would have register(), login()
-        // shop() that provides a menu for the products displaying their details
+        // shop() that provides a menu for products, displaying their details
         // and options to add/remove from cart. we would dynamically decrement product quantities
         // whenever a successful transaction happens and empty the cart of the user
 
@@ -55,7 +55,7 @@ public class Main {
         walletService.fund(shahd.getUsername(), 10000);
         cartService.assignCustomerToCart(shahd.getUsername());
 
-        cartService.addToCart(shahd.getUsername(), cheese, 25); // more than available
+        //cartService.addToCart(shahd.getUsername(), cheese, 25); // more than available
         //cartService.addToCart(shahd.getUsername(), laptop, 1); // insufficient balance
         //cartService.addToCart(shahd.getUsername(), milk, 1); // expired
         cartService.addToCart(shahd.getUsername(), mobile, 1);
