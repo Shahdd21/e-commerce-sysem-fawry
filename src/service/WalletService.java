@@ -1,6 +1,7 @@
 package service;
 
 import entity.Wallet;
+import exception.InsufficientBalanceException;
 import repository.WalletRepository;
 
 public class WalletService {
@@ -13,7 +14,13 @@ public class WalletService {
 
     public boolean withdraw(String username, double amount){
 
-        return walletRepository.withdraw(username, amount);
+        boolean isSuccessful =  walletRepository.withdraw(username, amount);
+
+        if(!isSuccessful){
+            throw new InsufficientBalanceException("Insufficient balance in your wallet.");
+        }
+
+        return true;
     }
 
     public void fund(String username, double amount){
