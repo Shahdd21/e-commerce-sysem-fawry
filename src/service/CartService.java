@@ -2,7 +2,6 @@ package service;
 
 import entity.Cart;
 import entity.Product;
-import exception.OutOfStockException;
 import repository.CartRepository;
 
 import java.util.Map;
@@ -18,6 +17,8 @@ public class CartService {
     }
 
     public void addToCart(String username, Product product, Integer quantity){
+
+        if(quantity < 0) throw new IllegalArgumentException("Invalid quantity value.");
 
         if(productService.getQuantity(product) == 0){
             System.out.println("Failed to add "+ product.getName() +
