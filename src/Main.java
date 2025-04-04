@@ -49,7 +49,7 @@ public class Main {
         productService.addProduct(lotteryTicket, 0);
 
         //customer input
-        Customer shahd = new Customer("Shahd Mahmoud", "shahd",
+        Customer shahd = new Customer("Shahd", "Mahmoud",
                 "0135648970", "shahd@gmail.com", "Alexandria");
         walletService.assignWalletToUser(shahd.getUsername());
         walletService.fund(shahd.getUsername(), 10000);

@@ -2,7 +2,8 @@ package entity;
 
 public class Customer {
 
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String username;
     private String phoneNumber;
     private String email;
@@ -12,12 +13,29 @@ public class Customer {
 
     }
 
-    public Customer(String fullName, String username, String phoneNumber, String email, String address) {
-        this.fullName = fullName;
-        this.username = username + System.currentTimeMillis()%100;
+    public Customer(String firstName, String lastName, String phoneNumber, String email, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = firstName + System.currentTimeMillis()%100;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -26,14 +44,6 @@ public class Customer {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getPhoneNumber() {
