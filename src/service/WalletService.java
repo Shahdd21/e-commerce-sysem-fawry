@@ -33,7 +33,7 @@ public class WalletService {
     }
 
     public void assignWalletToUser(String username){
-        walletRepository.associateWalletToUser(username);
+        walletRepository.assignWalletToUser(username);
     }
 
     public Wallet getWallet(String username){

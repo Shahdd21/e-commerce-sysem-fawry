@@ -36,7 +36,7 @@ public class WalletRepository {
         return walletMap.get(username).getBalance();
     }
 
-    public void associateWalletToUser(String username){
+    public void assignWalletToUser(String username){
         walletMap.put(username, new Wallet());
     }
 
