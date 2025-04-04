@@ -2,6 +2,7 @@ package service;
 
 import entity.Cart;
 import entity.Product;
+import exception.OutOfStockException;
 import repository.CartRepository;
 
 import java.util.Map;
@@ -21,6 +22,10 @@ public class CartService {
         if(productService.getQuantity(product) == 0){
             System.out.println("Failed to add "+ product.getName() +
                     " to cart. Out of stock");
+
+            //throw new OutOfStockException("Out of stock exception");
+            // i see it more convenient not to throw exception and continue adding
+            //other items and pay for what can be added
         }
 
         else if(quantity > productService.getQuantity(product)){
@@ -31,6 +36,10 @@ public class CartService {
         else if(product.isExpired()){
             System.out.println("Failed to add "+ product.getName() +
                     " to cart. Expired Product");
+
+            //throw new ExpiredProductException("Out of stock exception");
+            // i see it more convenient not to throw exception and continue adding
+            //other items and pay for what can be added
         }
 
         else{
