@@ -1,12 +1,12 @@
 import entity.*;
 import exception.EmptyCartException;
 import exception.ExceptionHandler;
-import exception.ExpiredProductException;
 import repository.CartRepository;
 import repository.ProductRepository;
 import repository.WalletRepository;
 import service.CartService;
 import service.ProductService;
+import service.ShippingService;
 import service.WalletService;
 
 import java.util.HashMap;
@@ -17,6 +17,7 @@ public class Main {
     public static ProductService productService = new ProductService(new ProductRepository());
     public static WalletService walletService = new WalletService(new WalletRepository());
     public static CartService cartService = new CartService(new CartRepository(), productService);
+    public static ShippingService shippingService = new ShippingService();
 
     public static void main(String[] args) {
 
@@ -91,31 +92,18 @@ public class Main {
 
         System.out.println("-------------------------------");
 
+        boolean shipping = false;
         if(!shippableProducts.isEmpty()){
-            System.out.println("** Shipped Items **");
-
-            double totalWeight = 0;
-            for(Map.Entry<ShippableProduct, Integer> entry : shippableProducts.entrySet()){
-
-                double weight = entry.getKey().getWeight()* entry.getValue();
-                totalWeight += weight;
-
-                System.out.print(entry.getValue() +"x  "+ entry.getKey().getName()+
-                        "\t");
-
-                System.out.println(weight >= 1000 ? (weight/1000) +" kg" : weight +" g");
-            }
-            System.out.println("Total Weight" +"\t"+ (totalWeight >= 1000 ? (totalWeight/1000) +" kg" : totalWeight + " g"));
+            shippingService.ship(shippableProducts);
+            shipping = true;
         }
 
-        System.out.println("------------------------------------");
-
         double subTotal = cartService.getTotalPrice(customer.getUsername());
-        double shipping = subTotal*0.1;
-        double total = subTotal+shipping;
+        double shippingCost = subTotal*0.1;
+        double total = subTotal + (shipping ? shippingCost : 0);
 
         System.out.println("Subtotal"+"\t" + subTotal);
-        System.out.println("Shipping"+"\t" + shipping);
+        if(shipping) System.out.println("Shipping"+"\t" + shippingCost);
         System.out.println("Total"+ "\t" + total);
 
         System.out.println("---------------------------------------");
