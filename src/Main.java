@@ -20,6 +20,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // for full design, we would have register(), login()
+        // shop() that provides a menu for the products displaying their details
+        // and options to add/remove from cart. we would dynamically decrement product quantities
+        // whenever a successful transaction happens and empty the cart of the user
+
         try{
             run();
         } catch (Exception e){
@@ -50,11 +55,11 @@ public class Main {
         walletService.fund(shahd.getUsername(), 10000);
         cartService.assignCustomerToCart(shahd.getUsername());
 
-        //cartService.addToCart(shahd.getUsername(), cheese, 20); // more than available
+        cartService.addToCart(shahd.getUsername(), cheese, 25); // more than available
         //cartService.addToCart(shahd.getUsername(), laptop, 1); // insufficient balance
-        cartService.addToCart(shahd.getUsername(), milk, 1); // expired
+        //cartService.addToCart(shahd.getUsername(), milk, 1); // expired
         cartService.addToCart(shahd.getUsername(), mobile, 1);
-        cartService.addToCart(shahd.getUsername(), lotteryTicket, 1); // out of stock
+        //cartService.addToCart(shahd.getUsername(), lotteryTicket, 1); // out of stock
         cartService.addToCart(shahd.getUsername(), lgTv, 1);
 
 
@@ -100,7 +105,7 @@ public class Main {
 
                 System.out.println(weight >= 1000 ? (weight/1000) +" kg" : weight +" g");
             }
-            System.out.println("Total Weight" +"\t"+ (totalWeight/1000) +" kg");
+            System.out.println("Total Weight" +"\t"+ (totalWeight >= 1000 ? (totalWeight/1000) +" kg" : totalWeight + " g"));
         }
 
         System.out.println("------------------------------------");
