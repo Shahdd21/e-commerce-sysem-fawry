@@ -1,4 +1,6 @@
 import entity.*;
+import exception.EmptyCartException;
+import exception.ExceptionHandler;
 import repository.CartRepository;
 import repository.ProductRepository;
 import repository.WalletRepository;
@@ -6,9 +8,7 @@ import service.CartService;
 import service.ProductService;
 import service.WalletService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -19,7 +19,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //initialization
+        try{
+            run();
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
+    }
+
+    public static void run(){
+        //system initialization
         Product milk = new Product("Juhayna", 50, true);
         Product cheese = new ShippableProduct("Domty", 30, false, 200);
         Product lgTv = new ShippableProduct("LG", 3000, false, 1000);
@@ -32,16 +40,17 @@ public class Main {
         productService.addProduct(laptop, 10);
         productService.addProduct(milk, 10);
 
+        //customer input
         Customer shahd = new Customer("Shahd Mahmoud", "shahd",
                 "0135648970", "shahd@gmail.com", "Alexandria");
         walletService.assignWalletToUser(shahd.getUsername());
         walletService.fund(shahd.getUsername(), 10000);
         cartService.assignCustomerToCart(shahd.getUsername());
 
-       // cartService.addToCart(shahd.getUsername(), cheese, 25); // more than available
-       //cartService.addToCart(shahd.getUsername(), laptop, 1); // insufficient balance
-       // cartService.addToCart(shahd.getUsername(), milk, 1); // expired
-        cartService.addToCart(shahd.getUsername(), mobile, 1);
+        cartService.addToCart(shahd.getUsername(), cheese, 20); // more than available
+        //cartService.addToCart(shahd.getUsername(), laptop, 1); // insufficient balance
+        cartService.addToCart(shahd.getUsername(), milk, 1); // expired
+        //cartService.addToCart(shahd.getUsername(), mobile, 1);
         cartService.addToCart(shahd.getUsername(), lgTv, 1);
 
 
@@ -55,16 +64,10 @@ public class Main {
         Cart cart = cartService.getCart(username);
 
         if(cart.getItems().isEmpty()){
-            System.out.println("Failed Checkout. Empty Cart");
-            return;
+            throw new EmptyCartException("Failed Checkout. Empty Cart");
         }
 
-        if(cartService.getTotalPrice(username) > walletService.getBalance(username)){
-            System.out.println("Failed Transaction. Insufficient Balance");
-            return;
-        }
-
-        System.out.println("** Checkout Receipt **");
+        System.out.println("\n** Checkout Receipt **");
 
         Map<ShippableProduct, Integer> shippableProducts = new HashMap<>();
 
@@ -95,12 +98,19 @@ public class Main {
             System.out.println("Total Weight" +"\t"+ (totalWeight/1000) +" kg");
         }
 
-        System.out.println("-------------------------------");
+        System.out.println("------------------------------------");
 
         double subTotal = cartService.getTotalPrice(customer.getUsername());
         double shipping = subTotal*0.1;
+        double total = subTotal+shipping;
+
         System.out.println("Subtotal"+"\t" + subTotal);
         System.out.println("Shipping"+"\t" + shipping);
-        System.out.println("Total"+ "\t" + (subTotal+shipping));
+        System.out.println("Total"+ "\t" + total);
+
+        System.out.println("---------------------------------------");
+
+        walletService.withdraw(username, total);
+        System.out.println("Current Balance"+ "\t" + walletService.getBalance(username));
     }
 }
