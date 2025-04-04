@@ -2,7 +2,6 @@ package service;
 
 import entity.Cart;
 import entity.Product;
-import exception.InsufficientBalanceException;
 import repository.CartRepository;
 
 import java.util.Map;
@@ -19,7 +18,12 @@ public class CartService {
 
     public void addToCart(String username, Product product, Integer quantity){
 
-        if(quantity > productService.getQuantity(product)){
+        if(productService.getQuantity(product) == 0){
+            System.out.println("Failed to add "+ product.getName() +
+                    " to cart. Out of stock");
+        }
+
+        else if(quantity > productService.getQuantity(product)){
             System.out.println("Failed to add "+ product.getName() +
                     " to cart. Quantity provided is more than the available");
         }
@@ -27,11 +31,6 @@ public class CartService {
         else if(product.isExpired()){
             System.out.println("Failed to add "+ product.getName() +
                     " to cart. Expired Product");
-        }
-
-        else if(productService.getQuantity(product) == 0){
-            System.out.println("Failed to add "+ product.getName() +
-                    " to cart. Out of stock");
         }
 
         else{

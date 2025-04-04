@@ -1,6 +1,7 @@
 import entity.*;
 import exception.EmptyCartException;
 import exception.ExceptionHandler;
+import exception.ExpiredProductException;
 import repository.CartRepository;
 import repository.ProductRepository;
 import repository.WalletRepository;
@@ -33,12 +34,14 @@ public class Main {
         Product lgTv = new ShippableProduct("LG", 3000, false, 1000);
         Product mobile = new Product("Samsung", 5000, false);
         Product laptop = new Product("Lenovo", 15000, false);
+        Product lotteryTicket = new Product("lottery", 100, false);
 
         productService.addProduct(cheese, 20);
         productService.addProduct(lgTv, 10);
         productService.addProduct(mobile, 5);
         productService.addProduct(laptop, 10);
         productService.addProduct(milk, 10);
+        productService.addProduct(lotteryTicket, 0);
 
         //customer input
         Customer shahd = new Customer("Shahd Mahmoud", "shahd",
@@ -47,10 +50,11 @@ public class Main {
         walletService.fund(shahd.getUsername(), 10000);
         cartService.assignCustomerToCart(shahd.getUsername());
 
-        cartService.addToCart(shahd.getUsername(), cheese, 20); // more than available
+        //cartService.addToCart(shahd.getUsername(), cheese, 20); // more than available
         //cartService.addToCart(shahd.getUsername(), laptop, 1); // insufficient balance
         cartService.addToCart(shahd.getUsername(), milk, 1); // expired
-        //cartService.addToCart(shahd.getUsername(), mobile, 1);
+        cartService.addToCart(shahd.getUsername(), mobile, 1);
+        cartService.addToCart(shahd.getUsername(), lotteryTicket, 1); // out of stock
         cartService.addToCart(shahd.getUsername(), lgTv, 1);
 
 
@@ -77,6 +81,7 @@ public class Main {
 
             System.out.println(entry.getValue() +"x  "+ entry.getKey().getName()+ "\t"+
                     entry.getKey().getPrice()* entry.getValue());
+
         }
 
         System.out.println("-------------------------------");
